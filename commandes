@@ -1,0 +1,27 @@
+sudo docker ps
+sudo docker ps -a
+sudo docker rm -f ID_CONTAINER
+sudo docker images
+sudo docker rmi ID_IMAGE
+sudo docker exec -i ID_CONTAINER bash -c "ls"
+sudo docker run -it --entrypoint /bin/bash ID_IMAGE
+sudo docker run -d -p 80:80 ID_IMAGE
+
+0.doc
+https://docs.docker.com/engine/reference/builder/
+https://docs.docker.com/develop/develop-images/dockerfile_best-practices/
+
+1. install
+nginx 
+	https://www.digitalocean.com/community/tutorials/how-to-install-nginx-on-debian-10
+mariadb
+	https://www.digitalocean.com/community/tutorials/how-to-install-linux-nginx-mariadb-php-lemp-stack-on-debian-10
+openssl 
+	https://www.digitalocean.com/community/tutorials/how-to-create-a-self-signed-ssl-certificate-for-nginx-on-debian-10
+	https://www.jamescoyle.net/how-to/1073-bash-script-to-create-an-ssl-certificate-key-and-request-csr
+phpmyadmin
+	https://www.digitalocean.com/community/tutorials/how-to-install-and-secure-phpmyadmin-with-nginx-on-a-debian-9-server
+wordpress
+	https://www.digitalocean.com/community/tutorials/how-to-install-wordpress-with-lemp-nginx-mariadb-and-php-on-debian-10
+2.config
+3.autoindex
