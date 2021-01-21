@@ -1,0 +1,33 @@
+0. commandes docker
+	FROM : va chercher l'image de base, l'ensemble du docker se basera sur cette structure premiere
+	COPY : va copier depuis notre dossier local, vers le container
+	RUN : va executer une commande "shell" depuis le container, il faut donc que les element appele dans la commande soient present dans le container
+	ENV : cree une variable d'environnement qui va pouvoir etre modifie au lancement du container avec -e MYvar="change var"
+	EXPOSE : donne les port sur lesquels envoyer
+	ENTRYPOINT : correspont a l'etat, la configuration que l'on souhaite au demarrage du container
+	CMD : une seule par docker, correspond a la commande appele au lancement du container
+	|--> les deuxc se completent
+
+1. installation
+	installation necessite de faire un update avant. il est conseille de tout mettre sur la meme ligne pour que les elements correspondent entre eux. on peut les separer par \ plus un retour a la ligne. pour le sujet.
+
+2. configuration 
+	La configuration se fait sur l'ensemble des elements afin qu'ils puissent tous communiquer ensemble.
+pour nginx : nginx va aller chercher dans le dossier qui lui est indiquer par "root" dans son fichier de configuration (situe dans /etc/nginx/sites-available et il a un lien symbolique,eventuellement a recreer avec sites-enabled) tout ce qui est index.html index.xml... etc, bref tout ce qui est dans la ligne index du fichier de configuration (il faudra donc y ajouter index.php car wordpress et phpmyadmin ont des index.php)
+il faudra donc place dans le dossier pointe par root l'ensemble des element de phpmyadmin et wordpress dans des sous dossiers. il faudra aussi mettre cette emplacement route en chmod 755 ou surtout chown -R www-data:www-data /chemin/du/root car sinon on ne pourra pas y avoir acces
+Il faudra egalement ajouter la cle ssl et le certificat qui auront ete creer, en donnant leur chemin. 
+on ajoutera aussi l'autoindex on ou off
+enfin il faudra ajouter la configuration qui lui indique son comportement s'il rencontre quelquechose.php
+lui indiquer dqns un autre bloc serveur la configuration pour qu'il redirige tous les 80 vers 443.
+	les fichier des configurations de phpmyadmin et wordpress peuvent etre facilement modifie depuis celui donne originellement pour obtenir une config personnalise. il faudra cependant creer une base de donne par le biais de mariadb. pour ce faire il faut absolument que mysql soit start. donc il faut start mysql et creer la base de donne sur la meme ligne a l'aide de && car le lancement de start depuis un docker s'arrete immediatement apres 
+
+3. autoindex
+on peut indiquer dans un script shell ce qu'il faut faire en fonction de la valeur de la variable d'environnement grace a un 
+if ["${VARIABLE}" = "something"] 
+then
+	do something
+ 
+4. pieges
+	Le principal piege qui m'a pose probleme a plusieurs reprise est que les commande RUN /etc/init.d/nginx (ou php7.3 ou mysql) start n'ont pas d'effet dans le docker, ils start puis s'arretent tout de suite apres, ce qui avait pour effet soit de ne pas pouvoir builder le container (mysql) soit que la connection ne se faisait pas sur un navigateur quand on le lancait (nginx) soit que la config etait mal faite (php7.3). Egalement la connection ne se faisait pas car un autre gros probleme est que le container s'arretait de tourrne tout de suite aussi.
+j'ai regle les deux probleme grace a ENTRYPOINT, qui configure donc l'etat de demarrage.cette entrypoint correspond a un appel d'un script shell, dans lequel je start nginx, mysql et php7.3 et dans lequel je fais une boucle infini, pour empecher le container de se stopper seul immediatement. j'en ai profite pour mettre ce que je souhaitait faire de la variable ENV correspondant a l'autoindex.
+Bien sur il ne faut pas oublier de mettre les droits du init.sh en chmod 755
