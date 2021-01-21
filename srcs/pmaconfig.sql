@@ -1,4 +1,3 @@
-DROP DATABASE IF EXISTS phpmyadmin;
-CREATE DATABASE phpmyadmin;
-GRANT ALL on phpmyadmin.* to 'www-data'@'localhost' identified by 'user';
+CREATE USER 'user'@'localhost' IDENTIFIED BY 'user';
+GRANT ALL on phpmyadmin.* to 'user'@'localhost' IDENTIFIED BY 'user';
 FLUSH PRIVILEGES;

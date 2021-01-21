@@ -1,15 +1,23 @@
-sudo docker ps
-sudo docker ps -a
-sudo docker rm -f ID_CONTAINER
-sudo docker images
-sudo docker rmi ID_IMAGE
-sudo docker exec -i ID_CONTAINER bash -c "ls"
-sudo docker run -it --entrypoint /bin/bash ID_IMAGE
-sudo docker run -d -p 80:80 ID_IMAGE
+sudo docker build .          --> construiction de l'image
+sudo docker ps		     --> voir les conatainer qui tournent
+sudo docker ps -a            --> voir tous les containers existants
+sudo docker rm -f ID_CONTAINER     --> supprimer un container
+sudo docker images                 --> voir toutes les images existantes
+sudo docker rmi ID_IMAGE           --> supprimer une image
+sudo docker exec -i ID_CONTAINER bash -c "ls"      --> executer une commande dans le container
+sudo docker run -it --entrypoint /bin/bash ID_IMAGE      --> lancer un container et entrer dedans
+sudo docker run -d -p 80:80 ID_IMAGE       --> lancer un container sir le port 80
+sudo docker run -d -e MYVAR="changevar" -p 80:80 ID_IMAGE       --> changer la variable d'environnement 
+sudo docker run -p 80:80 -p 443:443 -it --entrypoint /bin/bash ID_IMAGE    --> les deux en meme temps (verifier que nginx tourne aussi)
+service nginx stop                --> arreter nginx
+sudo docker stop ID_CONTAINER     --> arreter de faire tourner un container
 
 0.doc
 https://docs.docker.com/engine/reference/builder/
 https://docs.docker.com/develop/develop-images/dockerfile_best-practices/
+https://wiki.debian.org/Nginx/DirectoryStructure
+https://www.nginx.com/resources/wiki/start/
+https://www.nginx.com/resources/wiki/start/topics/tutorials/config_pitfalls/
 
 1. install
 nginx 
