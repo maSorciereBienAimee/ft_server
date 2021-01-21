@@ -41,4 +41,3 @@ RUN chown -R www-data:www-data /var/www/*
 EXPOSE 443 80
 
 ENTRYPOINT ["/home/init.sh"]
-#CMD ["true", "batman", "superman"]
